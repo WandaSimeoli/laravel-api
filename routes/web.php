@@ -22,7 +22,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth', 'verified'])
+Route::middleware(['auth'])
 ->name('admin.')
 ->prefix('admin')
 ->group(function() {

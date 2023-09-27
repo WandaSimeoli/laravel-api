@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Admin\ProjectController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,17 +15,15 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::name('/api.')->group(function(){
+Route::name('api.')->group(function(){
 
-    Route::name('projects.')
-    ->prefix('projects')
-    ->group(function() {
-        Route::get('/', [ProjectController::class, 'index'])->name('index');
-        Route::get('/{project}', [ProjectController::class, 'show'])->name('show');
+    Route::resource('projects', ProjectController::class)->only([
+        'index',
+        'show'
+    ]);
 
     });
-});
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
+//  Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//      return $request->user();
 // });
