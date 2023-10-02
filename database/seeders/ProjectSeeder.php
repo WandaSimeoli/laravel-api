@@ -7,6 +7,9 @@ use Illuminate\Database\Seeder;
 use App\Models\Project;
 use App\Models\Type;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
+
 
 class ProjectSeeder extends Seeder
 {
@@ -15,7 +18,10 @@ class ProjectSeeder extends Seeder
      */
     public function run(): void
     {
-        Project::truncate();
+        Schema::withoutForeignKeyConstraints(function () {
+            Project::truncate();
+        });
+       
         for ($i=0; $i < 20; $i++) { 
             $project = new Project();
             $project->title= fake()->words(5, true);
@@ -23,6 +29,12 @@ class ProjectSeeder extends Seeder
             $project->content= fake()->paragraph(3);
             $randomType = Type::inRandomOrder()->first();
             $project->type_id = $randomType->id;
+            $imagePath = fake()->imageUrl();
+            $imageContent= file_get_contents($imagePath);
+            $newImageName = rand(1000, 9999). '-' .rand(1000, 9999). '-' .rand(1000, 9999). '.png';
+            $newImagePath = 'uploads/' .$newImageName;
+            file_put_contents(storage_path('app/public/' .$newImagePath), $imageContent);
+            $project->image = $newImagePath;
             $project->save();
         }
     }
