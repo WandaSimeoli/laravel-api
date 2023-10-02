@@ -16,6 +16,18 @@ class Project extends Model
         'type_id',
         'image'
     ];
+
+    protected $appends = [
+        'full_image'
+    ];
+
+    public function getFullImageAttribute() {
+        if($this->image) {
+            return asset('storage/' . $this->image);
+        } return null;
+      
+    }
+
     public function type() {
         return $this->belongsTo(Type::class);
     }
