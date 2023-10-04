@@ -29,7 +29,15 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $request->validate([
+            'name'=> 'required|max:255|min:3',
+            'email'=> 'required|email',
+            'message'=> 'required|max:4096|min:5'
+        ]);
+
+        $formData = $request->all();
+        return response()->json($formData);
     }
 
     /**
