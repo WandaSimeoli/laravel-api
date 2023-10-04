@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewContact;
 
 class ContactController extends Controller
 {
@@ -37,6 +39,8 @@ class ContactController extends Controller
         ]);
 
         $formData = $request->all();
+        $newContact = Contact::create($formData);
+        Mail::to('wandasim@gmail.com')->send(new NewContact($newContact));
         return response()->json($formData);
     }
 
